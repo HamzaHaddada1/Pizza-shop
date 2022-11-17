@@ -6,6 +6,7 @@ import com.Otto.task.lib.entity.PaymentMethod;
 import com.Otto.task.lib.entity.State;
 import com.Otto.task.lib.events.OrderCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
@@ -40,5 +41,16 @@ public class OrderAggregate {
                 State.CREATED,
                 createOrderCommand.getCustomerId()
         ));
+    }
+
+    @EventSourcingHandler
+    public void on(OrderCreatedEvent orderCreatedEvent) {
+        this.orderNumber = orderCreatedEvent.getId();
+        this.paymentMethod = orderCreatedEvent.getPaymentMethod();
+        this.price = orderCreatedEvent.getPrice();
+        this.items = orderCreatedEvent.getItems();
+        this.state = State.CREATED;
+        this.customerId = orderCreatedEvent.getCustomerId();
+        this.timestamp = LocalDateTime.now();
     }
 }
