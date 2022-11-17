@@ -1,9 +1,11 @@
 package com.Otto.task.command.aggregate;
 
+import com.Otto.task.command.commands.CancelOrderCommand;
 import com.Otto.task.command.commands.CreateOrderCommand;
 import com.Otto.task.lib.entity.Item;
 import com.Otto.task.lib.entity.PaymentMethod;
 import com.Otto.task.lib.entity.State;
+import com.Otto.task.lib.events.OrderCanceledEvent;
 import com.Otto.task.lib.events.OrderCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -51,6 +53,22 @@ public class OrderAggregate {
         this.items = orderCreatedEvent.getItems();
         this.state = State.CREATED;
         this.customerId = orderCreatedEvent.getCustomerId();
+        this.timestamp = LocalDateTime.now();
+    }
+
+    @CommandHandler
+    public void handle(CancelOrderCommand cancelOrderCommand) {
+        if (this.state.equals(State.DELIVERED)) {
+            // throw new BusinessException("",);
+        }
+        AggregateLifecycle.apply(new OrderCanceledEvent(
+                cancelOrderCommand.getId()
+        ));
+    }
+
+    @EventSourcingHandler
+    public void on(OrderCanceledEvent orderCanceledEvent) {
+        this.state = State.CANCELED;
         this.timestamp = LocalDateTime.now();
     }
 }
