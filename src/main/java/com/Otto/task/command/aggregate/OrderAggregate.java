@@ -4,6 +4,7 @@ import com.Otto.task.command.commands.CreateOrderCommand;
 import com.Otto.task.lib.entity.Item;
 import com.Otto.task.lib.entity.PaymentMethod;
 import com.Otto.task.lib.entity.State;
+import com.Otto.task.lib.events.OrderCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
