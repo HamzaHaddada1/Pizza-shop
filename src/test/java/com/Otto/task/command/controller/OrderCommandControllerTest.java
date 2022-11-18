@@ -36,6 +36,6 @@ class OrderCommandControllerTest {
     void testDeliverOrderSuccess() throws Exception {
         String data = "{\"address\":\"SeelingStr 44\",\"price\": 12.0,\"customerId\": \"12\",\"paymentMethod\": \"ONLINE\",\"items\": [{\"pizza\": \"ROMA\"},{\"pizza\": \"NAPOLI\"},{\"pizza\": \"MARGHERITA\"}]}";
         MvcResult result = mockMvc.perform(post("/v1/order").content(data).contentType("application/json")).andExpect(status().isCreated()).andReturn();
-        mockMvc.perform(put("/v1/order/cancel/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().isOk());
+        mockMvc.perform(put("/v1/order/private/deliver/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().isOk());
     }
 }
