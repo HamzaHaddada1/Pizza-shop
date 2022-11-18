@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,18 +30,23 @@ public class OrderCommandController {
 
 
     @PostMapping
-    public CompletableFuture<String> createOrder(@Valid @RequestBody CreateOrderRequestDTO request) {
-
-        return commandGateway.send(
-                new CreateOrderCommand(
-                        UUID.randomUUID().toString(),
-                        PaymentMethod.toPaymentMethod(request.getPaymentMethod()),
-                        mapper.ToItem(request.getItems()),
-                        request.getPrice(),
-                        request.getCustomerId(),
-                        request.getAddress()
-                )
-        );
+    public ResponseEntity createOrder(@Valid @RequestBody CreateOrderRequestDTO request) {
+        try {
+            String orderNumber = UUID.randomUUID().toString();
+            commandGateway.send(
+                    new CreateOrderCommand(
+                            orderNumber,
+                            PaymentMethod.toPaymentMethod(request.getPaymentMethod()),
+                            mapper.ToItem(request.getItems()),
+                            request.getPrice(),
+                            request.getCustomerId(),
+                            request.getAddress()
+                    )
+            );
+            return new ResponseEntity(orderNumber, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/cancel/{orderNumber}")
