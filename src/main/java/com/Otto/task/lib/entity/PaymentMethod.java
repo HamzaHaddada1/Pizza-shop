@@ -5,10 +5,10 @@ public enum PaymentMethod {
     OFFLINE;
 
     public static PaymentMethod toPaymentMethod(String paymentMethod){
-        switch (paymentMethod.toLowerCase()){
-            case "online": return PaymentMethod.ONLINE;
-            case "offline": return  PaymentMethod.OFFLINE;
-            default: throw new IllegalArgumentException("Payment method is not supported");
-        }
+        return switch (paymentMethod.toLowerCase()) {
+            case "online" -> PaymentMethod.ONLINE;
+            case "offline" -> PaymentMethod.OFFLINE;
+            default -> throw new IllegalArgumentException("Payment method is not supported");
+        };
     }
 }

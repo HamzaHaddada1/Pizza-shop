@@ -12,11 +12,11 @@ public enum Toppings {
     }
 
     public static Toppings toTopping(String toppings) {
-        switch (toppings.toLowerCase()) {
-            case "olives": return Toppings.OLIVES;
-            case "shrimp": return Toppings.SHRIMP;
-            case "onion": return Toppings.ONION;
-            default: throw new IllegalArgumentException("Topping is not in our menu");
-        }
+        return switch (toppings.toLowerCase()) {
+            case "olives" -> Toppings.OLIVES;
+            case "shrimp" -> Toppings.SHRIMP;
+            case "onion" -> Toppings.ONION;
+            default -> throw new IllegalArgumentException("Topping is not in our menu");
+        };
     }
 }
