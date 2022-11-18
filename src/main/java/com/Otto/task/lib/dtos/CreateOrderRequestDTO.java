@@ -16,11 +16,11 @@ public class CreateOrderRequestDTO {
     @NotNull(message = "Delivery address could not be null")
     private final String address;
 
-    private final PaymentMethod paymentMethod;
+    private final String paymentMethod;
 
     @NotEmpty
     @NotNull(message = "Cannot initialize order without items")
-    private  final List<Item> items;
+    private  final List<ItemDTO> items;
 
     private final double price;
 
