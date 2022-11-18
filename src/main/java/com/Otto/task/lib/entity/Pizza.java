@@ -13,4 +13,12 @@ public enum Pizza {
         this.price = price;
     }
 
+    public static Pizza toPizza(String pizza) {
+        switch (pizza.toLowerCase()) {
+            case "margherita": return Pizza.MARGHERITA;
+            case "roma": return Pizza.ROMA;
+            case "napoli": return Pizza.NAPOLI;
+            default: throw new IllegalArgumentException("Pizza is not in our menu");
+        }
+    }
 }

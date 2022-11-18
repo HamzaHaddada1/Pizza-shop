@@ -10,4 +10,13 @@ public enum Toppings {
     Toppings(double price) {
         this.price = price;
     }
+
+    public static Toppings toTopping(String toppings) {
+        switch (toppings.toLowerCase()) {
+            case "olives": return Toppings.OLIVES;
+            case "shrimp": return Toppings.SHRIMP;
+            case "onion": return Toppings.ONION;
+            default: throw new IllegalArgumentException("Topping is not in our menu");
+        }
+    }
 }
