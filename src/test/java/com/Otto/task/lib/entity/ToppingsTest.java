@@ -24,7 +24,7 @@ class ToppingsTest {
     void testToToppingFailure() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () ->Toppings.toTopping("Shrimp"),
+                () ->Toppings.toTopping("cheese"),
                 "Topping is not in our menu"
         );
 
