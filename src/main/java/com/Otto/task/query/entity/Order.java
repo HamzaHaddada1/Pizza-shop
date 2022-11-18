@@ -6,15 +6,13 @@ import com.Otto.task.lib.entity.State;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Card {
+@Table(name = "Orders")
+public class Order {
     @Id
     private String orderNumber;
     private String address;
@@ -26,7 +24,7 @@ public class Card {
     private String customerId;
     private String items;
 
-    public Card(String orderNumber, String address, double price, PaymentMethod paymentMethod, State state, String customerId,String items ) {
+    public Order(String orderNumber, String address, double price, PaymentMethod paymentMethod, State state, String customerId, String items ) {
         this.orderNumber = orderNumber;
         this.address = address;
         this.price = price;
