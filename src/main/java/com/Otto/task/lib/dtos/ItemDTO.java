@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -11,6 +13,8 @@ import java.util.List;
 @ToString
 public class ItemDTO {
 
-    private String Pizza;
-    private List<String> Toppings;
+    @NotNull
+    @NotEmpty
+    private String pizza;
+    private List<String> toppings;
 }
