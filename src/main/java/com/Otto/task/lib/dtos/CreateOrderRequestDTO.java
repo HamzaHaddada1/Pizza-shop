@@ -1,8 +1,6 @@
 package com.Otto.task.lib.dtos;
 
 
-import com.Otto.task.lib.entity.Item;
-import com.Otto.task.lib.entity.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
