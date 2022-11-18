@@ -41,7 +41,7 @@ public class OrderAggregate {
                 createOrderCommand.getPaymentMethod(),
                 createOrderCommand.getAddress(),
                 createOrderCommand.getItems(),
-                createOrderCommand.getPrice(),
+                calculatePrice(createOrderCommand.getItems()),
                 State.CREATED,
                 createOrderCommand.getCustomerId()
         ));
@@ -51,7 +51,7 @@ public class OrderAggregate {
     public void on(OrderCreatedEvent orderCreatedEvent) {
         this.orderNumber = orderCreatedEvent.getId();
         this.paymentMethod = orderCreatedEvent.getPaymentMethod();
-        this.price = orderCreatedEvent.getPrice();
+        this.price = calculatePrice(orderCreatedEvent.getItems());
         this.items = orderCreatedEvent.getItems();
         this.state = State.CREATED;
         this.customerId = orderCreatedEvent.getCustomerId();
@@ -89,5 +89,19 @@ public class OrderAggregate {
     public void on(OrderSentToDeliveryEvent orderSentToDeliveryEvent) {
         this.state = State.DELIVERED;
         this.timestamp = LocalDateTime.now();
+    }
+
+    private double calculatePrice(List<Item> items){
+        double pizzaPrice = items
+                .stream()
+                .map(item -> item.getPizza().price)
+                .reduce(0.0,Double::sum);
+        double toppingsPrice = items.stream()
+                .map(item -> item.getToppings()
+                        .stream()
+                        .map(topping -> topping.price)
+                        .reduce(0.0,Double::sum)
+                ).findFirst().get();
+        return pizzaPrice + toppingsPrice;
     }
 }
