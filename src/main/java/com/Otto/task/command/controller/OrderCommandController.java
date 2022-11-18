@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(path = "/v1/order")
@@ -50,20 +49,30 @@ public class OrderCommandController {
     }
 
     @PutMapping("/cancel/{orderNumber}")
-    public CompletableFuture<String> cancelOrder(@PathVariable String orderNumber){
-        return commandGateway.send(
-                new CancelOrderCommand(
-                        orderNumber
-                )
-        );
+    public ResponseEntity cancelOrder(@PathVariable String orderNumber){
+        try {
+             commandGateway.send(
+                    new CancelOrderCommand(
+                            orderNumber
+                    )
+            );
+            return new ResponseEntity(orderNumber, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/private/deliver/{orderNumber}")
-    public CompletableFuture<String> deliverOrder(@PathVariable String orderNumber){
-        return commandGateway.send(
-                new SendOrderToDeliveryCommand(
-                        orderNumber
-                )
-        );
+    public ResponseEntity deliverOrder(@PathVariable String orderNumber){
+        try {
+            commandGateway.send(
+                    new SendOrderToDeliveryCommand(
+                            orderNumber
+                    )
+            );
+            return new ResponseEntity(orderNumber, HttpStatus.OK);
+        }  catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
