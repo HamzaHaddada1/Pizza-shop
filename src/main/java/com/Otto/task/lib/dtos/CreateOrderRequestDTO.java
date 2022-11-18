@@ -4,6 +4,7 @@ package com.Otto.task.lib.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -20,7 +21,8 @@ public class CreateOrderRequestDTO {
 
     @NotEmpty
     @NotNull(message = "Cannot initialize order without items")
-    private  final List<ItemDTO> items;
+    @Valid
+    private final List<ItemDTO> items;
 
     private final double price;
 
