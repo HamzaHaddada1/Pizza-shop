@@ -18,3 +18,8 @@ Compromises:
 to give more appropriate exception messages.
 
 2- I would add an appropriate relation between Order, Item, Toppings class in the query and not save it as String.
+
+Running the System:
+please run this command to run axon server `docker run -d --name axonserver -p 8024:8024 -p 8214:8124 axoniq/axonserver`
+build the project `docker build -t challenge .`
+run the project `docker run -i -t -p 8080:8080 challenge`
