@@ -4,6 +4,8 @@ import com.Otto.task.command.commands.CancelOrderCommand;
 import com.Otto.task.command.commands.CreateOrderCommand;
 import com.Otto.task.command.commands.SendOrderToDeliveryCommand;
 import com.Otto.task.lib.dtos.CreateOrderRequestDTO;
+import com.Otto.task.lib.entity.PaymentMethod;
+import com.Otto.task.lib.mapper.ItemDtoToItemMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -22,6 +24,7 @@ public class OrderCommandController {
 
     @Autowired
     CommandGateway commandGateway;
+    ItemDtoToItemMapper mapper;
 
 
     @PostMapping
@@ -30,8 +33,8 @@ public class OrderCommandController {
         return commandGateway.send(
                 new CreateOrderCommand(
                         UUID.randomUUID().toString(),
-                        request.getPaymentMethod(),
-                        request.getItems(),
+                        PaymentMethod.toPaymentMethod(request.getPaymentMethod()),
+                        mapper.ToItem(request.getItems()),
                         request.getPrice(),
                         request.getCustomerId(),
                         request.getAddress()
