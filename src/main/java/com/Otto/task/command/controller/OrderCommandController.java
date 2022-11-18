@@ -32,7 +32,7 @@ public class OrderCommandController {
     public ResponseEntity createOrder(@Valid @RequestBody CreateOrderRequestDTO request) {
         try {
             String orderNumber = UUID.randomUUID().toString();
-            commandGateway.send(
+            commandGateway.sendAndWait(
                     new CreateOrderCommand(
                             orderNumber,
                             PaymentMethod.toPaymentMethod(request.getPaymentMethod()),
@@ -51,7 +51,7 @@ public class OrderCommandController {
     @PutMapping("/cancel/{orderNumber}")
     public ResponseEntity cancelOrder(@PathVariable String orderNumber){
         try {
-             commandGateway.send(
+             commandGateway.sendAndWait(
                     new CancelOrderCommand(
                             orderNumber
                     )
@@ -65,7 +65,7 @@ public class OrderCommandController {
     @PutMapping("/private/deliver/{orderNumber}")
     public ResponseEntity deliverOrder(@PathVariable String orderNumber){
         try {
-            commandGateway.send(
+            commandGateway.sendAndWait(
                     new SendOrderToDeliveryCommand(
                             orderNumber
                     )
