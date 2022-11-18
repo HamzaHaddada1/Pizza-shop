@@ -2,6 +2,7 @@ package com.Otto.task.command.controller;
 
 import com.Otto.task.command.commands.CancelOrderCommand;
 import com.Otto.task.command.commands.CreateOrderCommand;
+import com.Otto.task.command.commands.SendOrderToDeliveryCommand;
 import com.Otto.task.lib.dtos.CreateOrderRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,15 @@ public class OrderCommandController {
     public CompletableFuture<String> cancelOrder(@PathVariable String orderNumber){
         return commandGateway.send(
                 new CancelOrderCommand(
+                        orderNumber
+                )
+        );
+    }
+
+    @PutMapping("/private/deliver/{orderNumber}")
+    public CompletableFuture<String> deliverOrder(@PathVariable String orderNumber){
+        return commandGateway.send(
+                new SendOrderToDeliveryCommand(
                         orderNumber
                 )
         );
