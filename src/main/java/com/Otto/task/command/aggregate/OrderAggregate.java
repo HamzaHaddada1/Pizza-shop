@@ -61,7 +61,7 @@ public class OrderAggregate {
     @CommandHandler
     public void handle(CancelOrderCommand cancelOrderCommand) {
         if (this.state.equals(State.DELIVERED)) {
-            // throw new BusinessException("",);
+             throw new RuntimeException("Cannot Cancel while in delivery");
         }
         AggregateLifecycle.apply(new OrderCanceledEvent(
                 cancelOrderCommand.getId()
@@ -77,6 +77,9 @@ public class OrderAggregate {
 
     @CommandHandler
     public void handle(SendOrderToDeliveryCommand sendOrderToDeliveryCommand) {
+        if (this.state.equals(State.CANCELED)) {
+            throw new RuntimeException("Cannot sent a canceled order to delivery");
+        }
         AggregateLifecycle.apply(new OrderSentToDeliveryEvent(
                 sendOrderToDeliveryCommand.getId()
         ));
