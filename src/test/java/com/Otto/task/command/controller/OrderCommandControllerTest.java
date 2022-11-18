@@ -52,6 +52,16 @@ class OrderCommandControllerTest {
         String data = "{\"address\":\"SeelingStr 44\",\"price\": 12.0,\"customerId\": \"12\",\"paymentMethod\": \"ONLINE\",\"items\": [{\"pizza\": \"ROMA\"},{\"pizza\": \"NAPOLI\"},{\"pizza\": \"MARGHERITA\"}]}";
         MvcResult result = mockMvc.perform(post("/v1/order").content(data).contentType("application/json")).andExpect(status().isCreated()).andReturn();
         mockMvc.perform(put("/v1/order/private/deliver/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().isOk());
-        mockMvc.perform(put("/v1/order/cancel/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().is4xxClientError());
+        result = mockMvc.perform(put("/v1/order/cancel/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().is4xxClientError()).andReturn();
+        assertEquals("Cannot Cancel while in delivery", result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testDeliveryOrderFailure() throws Exception {
+        String data = "{\"address\":\"SeelingStr 44\",\"price\": 12.0,\"customerId\": \"12\",\"paymentMethod\": \"ONLINE\",\"items\": [{\"pizza\": \"ROMA\"},{\"pizza\": \"NAPOLI\"},{\"pizza\": \"MARGHERITA\"}]}";
+        MvcResult result = mockMvc.perform(post("/v1/order").content(data).contentType("application/json")).andExpect(status().isCreated()).andReturn();
+        mockMvc.perform(put("/v1/order/cancel/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().isOk());
+        result = mockMvc.perform(put("/v1/order/private/deliver/" + result.getResponse().getContentAsString()).contentType("application/json")).andExpect(status().is4xxClientError()).andReturn();
+        assertEquals("Cannot sent a canceled order to delivery", result.getResponse().getContentAsString());
     }
 }
