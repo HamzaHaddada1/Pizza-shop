@@ -9,6 +9,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,7 +24,7 @@ public class OrderCommandController {
 
 
     @PostMapping
-    public CompletableFuture<String> createOrder(@RequestBody CreateOrderRequestDTO request) {
+    public CompletableFuture<String> createOrder(@Valid @RequestBody CreateOrderRequestDTO request) {
 
         return commandGateway.send(
                 new CreateOrderCommand(
